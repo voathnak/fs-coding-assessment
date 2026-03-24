@@ -11,6 +11,29 @@ from app.routers import auth, todos, users
 settings = get_settings()
 
 
+def get_allowed_origins() -> list[str]:
+    """
+    Build CORS allow list from env and sensible local defaults.
+    Supports comma-separated FRONTEND_URL values.
+    """
+    configured = [
+        origin.strip()
+        for origin in settings.FRONTEND_URL.split(",")
+        if origin.strip()
+    ]
+    defaults = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
+    ]
+    unique: list[str] = []
+    for origin in [*configured, *defaults]:
+        if origin not in unique:
+            unique.append(origin)
+    return unique
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Starting up...")
@@ -30,9 +53,7 @@ app = FastAPI(
 # Middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        settings.FRONTEND_URL,
-    ],
+    allow_origins=get_allowed_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
