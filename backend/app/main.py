@@ -16,7 +16,7 @@ def get_allowed_origins() -> list[str]:
     Build CORS allow list from env and sensible local defaults.
     Supports comma-separated FRONTEND_URL values.
     """
-`    if settings.DEBUG:
+    if settings.DEBUG:
         # For easier local development in Docker or on host
         return ["*"]
 
