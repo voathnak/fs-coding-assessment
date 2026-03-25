@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 export function ConfirmModal({
   open,
   title,
@@ -13,6 +15,15 @@ export function ConfirmModal({
   onConfirm: () => void;
   onCancel: () => void;
 }) {
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCancel();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [open, onCancel]);
+
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-40 grid place-items-center bg-black/40 p-4" role="dialog" aria-modal="true">

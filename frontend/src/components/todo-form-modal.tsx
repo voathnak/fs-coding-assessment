@@ -37,9 +37,19 @@ export function TodoFormModal({ open, initialTodo, onClose, onSave }: Props) {
       e.preventDefault();
       e.returnValue = "";
     };
+    const keyHandler = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && open) {
+        if (isDirty && !window.confirm("Discard unsaved changes?")) return;
+        onClose();
+      }
+    };
     window.addEventListener("beforeunload", handler);
-    return () => window.removeEventListener("beforeunload", handler);
-  }, [isDirty, open]);
+    window.addEventListener("keydown", keyHandler);
+    return () => {
+      window.removeEventListener("beforeunload", handler);
+      window.removeEventListener("keydown", keyHandler);
+    };
+  }, [isDirty, open, onClose]);
 
   if (!open) return null;
 
