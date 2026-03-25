@@ -31,3 +31,5 @@ class Todo(TodoBase, TimeStampMixin, table=True):
     id: uuid.UUID = Field(
         default_factory=uuid.uuid4, primary_key=True, index=True, nullable=False
     )
+    # Owner of the todo. Required for access control and statistics.
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True, nullable=False)

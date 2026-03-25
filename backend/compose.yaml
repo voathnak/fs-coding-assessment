@@ -8,3 +8,24 @@ services:
       POSTGRES_PASSWORD: 5up3r53cr3t
     ports:
       - "5432:5432"
+
+  backend:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    command: >
+      sh -c "apt-get update &&
+      apt-get install -y --no-install-recommends build-essential libffi-dev &&
+      pip install --no-cache-dir
+      alembic asyncpg aiosqlite 'fastapi[standard]' psycopg2-binary 'pwdlib[argon2]'
+      pyjwt python-dotenv sqlmodel &&
+      for i in 1 2 3 4 5; do alembic upgrade head && break || sleep 2; done &&
+      uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
