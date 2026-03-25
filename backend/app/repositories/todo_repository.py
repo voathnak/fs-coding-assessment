@@ -72,7 +72,7 @@ class TodoRepository:
         if not todo:
             return False
 
-        self.session.delete(todo)
+        await self.session.delete(todo)
         await self.session.commit()
         return True
 
