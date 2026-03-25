@@ -138,3 +138,45 @@ def test_get_all_todos():
     assert by_user_id[u2_id]["title"] == "U2 Todo"
     assert "description" not in by_user_id[u2_id]
 
+
+def test_delete_todo():
+    client = TestClient(app)
+    username = "test-delete-user"
+    password = "Password123!"
+
+    # Register
+    client.post(
+        "/api/v1/auth/register",
+        json={"username": username, "email": "delete@example.com", "password": password},
+    )
+
+    # Login
+    login_resp = client.post(
+        "/api/v1/auth/login",
+        json={"username": username, "password": password},
+    )
+    token = login_resp.json()["access_token"]
+
+    # Create Todo
+    todo_resp = client.post(
+        "/api/v1/todos",
+        headers=_auth_headers(token),
+        json={"title": "Delete Me", "description": "Delete me description", "priority": "LOW"}
+    )
+    assert todo_resp.status_code == 201
+    todo_id = todo_resp.json()["id"]
+
+    # Delete Todo
+    delete_resp = client.delete(
+        f"/api/v1/todos/{todo_id}",
+        headers=_auth_headers(token)
+    )
+    assert delete_resp.status_code == 204
+
+    # Verify it's gone
+    get_resp = client.get(
+        f"/api/v1/todos/{todo_id}",
+        headers=_auth_headers(token)
+    )
+    assert get_resp.status_code == 404
+
