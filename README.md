@@ -22,6 +22,70 @@ Please check:
 
 ---
 
+## 🚀 Getting Started
+
+To get the application up and running locally, follow these steps.
+
+### Prerequisites
+
+- [Docker](https://www.docker.com/products/docker-desktop/) (recommended for easy setup)
+- **OR**
+- [Python 3.12+](https://www.python.org/downloads/) & [uv](https://github.com/astral-sh/uv) (for Backend)
+- [Node.js 22+](https://nodejs.org/) & [npm](https://www.npmjs.com/) (for Frontend)
+
+### 🐋 Option 1: Quick Start with Docker (Recommended)
+
+1.  **Clone the repository**.
+2.  **Ensure you have `.env` files**:
+    - Backend: `cp backend/.env.example backend/.env`
+    - Frontend: `cp frontend/.env.example frontend/.env.local`
+3.  **Start all services**:
+    ```bash
+    docker compose up --build
+    ```
+3.  **Access the application**:
+    - **Frontend**: [http://localhost:3000](http://localhost:3000)
+    - **Backend API**: [http://localhost:8000](http://localhost:8000)
+    - **API Docs (Swagger)**: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+---
+
+### 💻 Option 2: Manual Development Setup
+
+#### Backend Setup
+1.  Navigate to the `/backend` directory.
+2.  Follow the [Backend Setup Instructions](./backend/README.md).
+
+#### Frontend Setup
+1.  Navigate to the `/frontend` directory.
+2.  Follow the [Frontend Setup Instructions](./frontend/README.md).
+
+---
+
+## 🧪 Running Tests
+
+### Backend Tests
+From the root directory:
+```bash
+cd backend && uv sync && uv run pytest
+```
+
+### Frontend Tests
+From the root directory:
+```bash
+cd frontend && npm install && npm test
+```
+
+---
+
+## 📖 Documentation
+
+- [**Architecture & Trade-offs**](./ARCHITECTURE.md): Detailed explanation of the system design.
+- [**API Documentation**](http://localhost:8000/docs): Interactive Swagger UI (available when backend is running).
+- [**Frontend Components**](./frontend/README.md): Details on the UI implementation.
+
+---
+
 ## 🚀 Submission Requirements
 
 ### Must Include:
