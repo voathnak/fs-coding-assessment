@@ -16,6 +16,10 @@ def get_allowed_origins() -> list[str]:
     Build CORS allow list from env and sensible local defaults.
     Supports comma-separated FRONTEND_URL values.
     """
+    if settings.DEBUG:
+        # For easier local development in Docker or on host
+        return ["*"]
+
     configured = [
         origin.strip()
         for origin in settings.FRONTEND_URL.split(",")
@@ -26,6 +30,7 @@ def get_allowed_origins() -> list[str]:
         "http://127.0.0.1:3000",
         "http://localhost:3001",
         "http://127.0.0.1:3001",
+        "http://0.0.0.0:3000",
     ]
     unique: list[str] = []
     for origin in [*configured, *defaults]:
