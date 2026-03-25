@@ -55,6 +55,9 @@ export default function RegisterPage() {
           autoComplete="username"
           required
         />
+        <p className="mt-1 text-xs text-gray-500">
+          Username must be 3-255 characters and can only use letters, numbers, and underscore.
+        </p>
         {usernameError ? <p className="mt-1 text-xs text-red-600">{usernameError}</p> : null}
 
         <label className="mt-4 block text-sm font-medium" htmlFor="email">
@@ -82,6 +85,7 @@ export default function RegisterPage() {
           autoComplete="new-password"
           required
         />
+        <p className="mt-1 text-xs text-gray-500">Password must be 8-128 characters.</p>
         {passwordError ? <p className="mt-1 text-xs text-red-600">{passwordError}</p> : null}
 
         <button
